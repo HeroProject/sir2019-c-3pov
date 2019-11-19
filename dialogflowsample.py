@@ -10,7 +10,7 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
         self.langLock.acquire()
 
         # Pass the required Dialogflow parameters (add your Dialogflow parameters)
-        self.setDialogflowKey('key.json')
+        self.setDialogflowKey('<key.json>')
         self.setDialogflowAgent('newagent-xsfpqi')
         # Make the robot ask the question, and wait until it is done speaking
         self.speechLock = Semaphore(0)
