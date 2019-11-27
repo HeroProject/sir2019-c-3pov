@@ -1,19 +1,19 @@
 import random
-
-from IPython.core import logger
-
 import AbstractApplication as Base
 from threading import Semaphore
 
 
 class DialogFlowSampleApplication(Base.AbstractApplication):
     """
-        self.intents[intent][0]   =     SEMAPHORE
-        self.intents[intent][1]   =     CONVERSATION INTRO
-        self.intents[intent][2]   =     USER RESPONSE
-        self.intents[intent][3]   =     GOOD RESPONSE
-        self.intents[intent[4]    =     BAD RESPONSE
+    INTENT DICTIONARY STRUCTURE:
+        self.intents[intent][0]   :     SEMAPHORE
+        self.intents[intent][1]   :     CONVERSATION INTRO
+        self.intents[intent][2]   :     USER RESPONSE
+        self.intents[intent][3]   :     GOOD RESPONSE
+        self.intents[intent[4]    :     BAD RESPONSE
     """
+
+    '''   STANDARD CONVERSATION FUNCTION PROCESS   '''
     def converse(self, intent):
         if intent in self.intents.keys():
             self.sayAnimated(random.choice(self.intents[intent][1]))
@@ -26,12 +26,28 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
                 self.intents[intent][0].acquire(timeout=2)
             # Respond and wait for that to finish
             if self.intents[intent][2]:
+                self.add_good_reply_value(intent)
                 self.sayAnimated(random.choice(self.intents[intent][3]))
             else:
                 self.sayAnimated(random.choice(self.intents[intent][4]))
             self.speechLock.acquire()
         else:
             raise Exception('Intent passed does not exist')
+
+    def add_good_reply_value(self, intent):
+        reply_value = self.intents[intent][2]
+
+        if intent == 'answer_name':
+            self.intents[intent][3] = [
+                'Nice to meet you '+reply_value+'!',
+                'Oh hi'+reply_value+'!',
+                reply_value+', what a beautiful name. Reminds me of my creators.'
+            ]
+        elif intent == 'answer_destination':
+            self.intents[intent][3] = [
+                'Oooooo, ' + reply_value + ' is lovely.',
+                'I. LOVE. ' + reply_value + '!'
+            ]
 
     def main(self):
         self.intents = \
@@ -40,7 +56,7 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
                     [Semaphore(0),
                      ['What is your name?', 'Who are you?'],
                      None,
-                     ['Nice to meet you!'],
+                     [],
                      ['Sorry, I didn\'t get that']
                 ],
 
@@ -48,7 +64,7 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
                     [Semaphore(0),
                      ['Where are you headed to?', 'Where are you going?'],
                      None,
-                     ['Oooo, that is a lovely place'],
+                     [],
                      ['Sorry, I didn\'t get where you\'re going']
                 ]
                         }
@@ -58,7 +74,7 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
         self.langLock.acquire()
 
         # Pass the required Dialogflow parameters (add your Dialogflow parameters)
-        self.setDialogflowKey('newagent-xsfpqi-be69c3c98fe1.json')
+        self.setDialogflowKey('newagent-xsfpqi-66f399b80178.json')
         self.setDialogflowAgent('newagent-xsfpqi')
 
         # Make the robot ask the question, and wait until it is done speaking
@@ -68,7 +84,8 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
         self.converse('answer_name')
         self.converse('answer_destination')
 
-        # Display a gesture (replace <gestureID> with your gestureID)
+        # TODO
+        #   Display a gesture (replace <gestureID> with your gestureID)
         self.gestureLock = Semaphore(0)
         self.doGesture('<gestureID>/behavior_1')
         self.gestureLock.acquire()
