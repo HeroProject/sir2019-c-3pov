@@ -86,9 +86,11 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
 
         # TODO
         #   Display a gesture (replace <gestureID> with your gestureID)
+        '''
         self.gestureLock = Semaphore(0)
         self.doGesture('<gestureID>/behavior_1')
         self.gestureLock.acquire()
+        '''
 
     def onRobotEvent(self, event):
         if event == 'LanguageChanged':
