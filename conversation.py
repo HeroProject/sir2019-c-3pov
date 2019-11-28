@@ -59,7 +59,7 @@ class SimpleAnswerQuestion(Question):
 
 
 class ClosedQuestion(SimpleAnswerQuestion):
-    def __init__(self, question: str, answer_options: List[Union[str, int]], answer: str = None):
+    def __init__(self, question: str, answer_options: List[str], answer: str = None):
         self._answer_options = answer_options
         super(ClosedQuestion, self).__init__(
             question=question,
@@ -68,6 +68,10 @@ class ClosedQuestion(SimpleAnswerQuestion):
 
     def normalize_answer(self, answer: str) -> Optional[str]:
         return super().normalize_answer(answer.lower()) if type(answer) == str else None
+
+    def get_answer(self):
+        answer = super().get_answer()
+        return answer if answer in self._answer_options else None
 
 
 class BooleanQuestion(ClosedQuestion):
@@ -127,13 +131,9 @@ class PlatformQuestion(ClosedQuestion):
     def __init__(self, **args):
         super(PlatformQuestion, self).__init__(
             question='Please specify the platform',
-            answer_options=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+            answer_options=['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'],
             **args
         )
-
-    def normalize_answer(self, answer: str) -> Optional[int]:
-        answer = super().normalize_answer(answer)
-        return int(answer) if answer else None
 
     def process_answer(self) -> Optional[Question]:
         platform = self.get_answer()
@@ -141,6 +141,7 @@ class PlatformQuestion(ClosedQuestion):
         # platform is None if it not exists
         if not platform:
             print('I\'m sorry, but that platform does not exist at this train station')
+            return PlatformQuestion()
 
         print('You can find platform %s over there' % platform)
         return AnythingElseICanDoQuestion()
