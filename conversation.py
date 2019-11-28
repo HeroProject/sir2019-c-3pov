@@ -1,4 +1,4 @@
-from typing import Dict, Optional, Union, List
+from typing import Dict, Optional, List
 
 
 class Question:
@@ -11,20 +11,23 @@ class Question:
         self._params: Dict[str, any] = self.set_params(params)
 
     def ask_question(self):
-        print(self._question)
-        if self._expects_intent and not self.has_intent():
-            self.set_intent(input('Intent: '))
+        get_intent: bool = self._expects_intent and not self.has_intent()
+        get_params: bool = self._expects_params and not self.has_params()
+        if get_intent or get_params:
+            print(self._question)
+            if get_intent:
+                self.set_intent(input('Intent: '))
 
-        if self._expects_params and not self.has_params():
-            # You can replace this with your own logic in that actually accepts multiple params.
-            # By default we'll only have answer.
-            self.set_params({'answer': input('Answer: ')})
+            if get_params:
+                # You can replace this with your own logic in that actually accepts multiple params.
+                # By default we'll only have answer.
+                self.set_params({'answer': input('Answer: ')})
 
     def has_intent(self) -> bool:
         return self._intent is not None
 
     def has_params(self) -> bool:
-        return not self._params
+        return self._params is not None
 
     def set_intent(self, intent: str) -> Optional[str]:
         self._intent = intent.lower().strip() if type(intent) is str else None
@@ -69,9 +72,8 @@ class ClosedQuestion(SimpleAnswerQuestion):
     def normalize_answer(self, answer: str) -> Optional[str]:
         return super().normalize_answer(answer.lower()) if type(answer) == str else None
 
-    def get_answer(self):
-        answer = super().get_answer()
-        return answer if answer in self._answer_options else None
+    def validate_answer(self) -> bool:
+        return self.get_answer() in self._answer_options
 
 
 class BooleanQuestion(ClosedQuestion):
@@ -106,9 +108,9 @@ class WhatCanIDoForYouQuestion(Question):
 
     def process_answer(self) -> Optional[Question]:
         if self._intent == 'locate_platform':
-            return PlatformQuestion(answer=self._params)
+            return PlatformQuestion(answer=self._params['answer'])
         elif self._intent == 'find_destination':
-            return DestinationQuestion(answer=self._params)
+            return DestinationQuestion(answer=self._params['answer'])
         else:
             print('I didn\'t quite catch that.')
             return WhatCanIDoForYouQuestion()
@@ -136,14 +138,12 @@ class PlatformQuestion(ClosedQuestion):
         )
 
     def process_answer(self) -> Optional[Question]:
-        platform = self.get_answer()
-
         # platform is None if it not exists
-        if not platform:
+        if not self.validate_answer():
             print('I\'m sorry, but that platform does not exist at this train station')
             return PlatformQuestion()
 
-        print('You can find platform %s over there' % platform)
+        print('You can find platform %s over there' % self.get_answer())
         return AnythingElseICanDoQuestion()
 
 
