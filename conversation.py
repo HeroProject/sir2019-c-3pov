@@ -1,30 +1,36 @@
-import string
 from typing import Dict, Optional, Union, List
 
 
 class Question:
-    def __init__(self, question: string, expects_intent: bool = False, expects_params: bool = True,
-                 intent: string = None, params: Dict[string, any] = None):
+    def __init__(self, question: str, expects_intent: bool = False, expects_params: bool = True,
+                 intent: str = None, params: Dict[str, any] = None):
         self._question = question
         self._expects_intent = expects_intent
         self._expects_params = expects_params
-        self._intent: string = self.set_intent(intent)
-        self._params: Dict[string, any] = self.set_params(params)
+        self._intent: str = self.set_intent(intent)
+        self._params: Dict[str, any] = self.set_params(params)
 
     def ask_question(self):
-        if self._expects_intent and not self._intent:
+        print(self._question)
+        if self._expects_intent and not self.has_intent():
             self.set_intent(input('Intent: '))
 
-        if self._expects_params and not self._params:
+        if self._expects_params and not self.has_params():
             # You can replace this with your own logic in that actually accepts multiple params.
             # By default we'll only have answer.
             self.set_params({'answer': input('Answer: ')})
 
-    def set_intent(self, intent: string):
-        self._intent = intent.lower().strip()
+    def has_intent(self) -> bool:
+        return self._intent is not None
+
+    def has_params(self) -> bool:
+        return not self._params
+
+    def set_intent(self, intent: str) -> Optional[str]:
+        self._intent = intent.lower().strip() if type(intent) is str else None
         return self._intent
 
-    def set_params(self, params: Dict[string, any] = None):
+    def set_params(self, params: Dict[str, any] = None):
         self._params = params
         return self._params
 
@@ -33,13 +39,13 @@ class Question:
 
 
 class SimpleAnswerQuestion(Question):
-    def __init__(self, question: string, answer: string = None):
+    def __init__(self, question: str, answer: str = None):
         super(SimpleAnswerQuestion, self).__init__(
             question=question,
             params={'answer': self.normalize_answer(answer)}
         )
 
-    def normalize_answer(self, answer: string) -> string:
+    def normalize_answer(self, answer: str) -> Optional[str]:
         if type(answer) == str:
             answer = answer.strip()
             return answer if len(answer) > 0 else None
@@ -48,22 +54,24 @@ class SimpleAnswerQuestion(Question):
     def get_answer(self):
         return self._params['answer']
 
+    def has_params(self) -> bool:
+        return self.get_answer() is not None
+
 
 class ClosedQuestion(SimpleAnswerQuestion):
-    def __init__(self, question: string, answer_options: List[Union[string, int]], answer: string = None):
+    def __init__(self, question: str, answer_options: List[Union[str, int]], answer: str = None):
         self._answer_options = answer_options
         super(ClosedQuestion, self).__init__(
             question=question,
             answer=answer
         )
 
-    def normalize_answer(self, answer: string) -> string:
-        answer = super().normalize_answer(answer.lower())
-        return answer if answer in self._answer_options else None
+    def normalize_answer(self, answer: str) -> Optional[str]:
+        return super().normalize_answer(answer.lower()) if type(answer) == str else None
 
 
 class BooleanQuestion(ClosedQuestion):
-    def __init__(self, question: string, **args):
+    def __init__(self, question: str, **args):
         super(BooleanQuestion, self).__init__(
             question=question,
             answer_options=['yes', 'no'],
@@ -71,22 +79,22 @@ class BooleanQuestion(ClosedQuestion):
         )
 
 
-class WhatIsYourNameQuestion(Question):
-    def __init__(self, params: Dict[string, any] = None):
+class WhatIsYourNameQuestion(SimpleAnswerQuestion):
+    def __init__(self, answer: str = None):
         super(WhatIsYourNameQuestion, self).__init__(
             question='What is your name?',
-            params=params
+            answer=answer
         )
 
     def process_answer(self) -> Optional[Question]:
-        print('Nice to meet you %s.' % self._params)
+        print('Nice to meet you %s.' % self.get_answer())
         return WhatCanIDoForYouQuestion()
 
 
 class WhatCanIDoForYouQuestion(Question):
-    def __init__(self, intent: string = None, params: Dict[string, any] = None):
+    def __init__(self, intent: str = None, params: Dict[str, any] = None):
         super(WhatCanIDoForYouQuestion, self).__init__(
-            question='What can I do for you?',
+            question='What can I do for you? (options: locate_platform, find_destination)',
             expects_intent=True,
             intent=intent,
             params=params
@@ -103,10 +111,10 @@ class WhatCanIDoForYouQuestion(Question):
 
 
 class AnythingElseICanDoQuestion(BooleanQuestion):
-    def __init__(self, answer: string = None):
+    def __init__(self, **args):
         super(AnythingElseICanDoQuestion, self).__init__(
             question='Anything else I can do for you?',
-            answer=answer
+            **args
         )
 
     def process_answer(self) -> Optional[Question]:
@@ -123,8 +131,9 @@ class PlatformQuestion(ClosedQuestion):
             **args
         )
 
-    def normalize_answer(self, answer: string) -> int:
-        return int(super().normalize_answer(answer))
+    def normalize_answer(self, answer: str) -> Optional[int]:
+        answer = super().normalize_answer(answer)
+        return int(answer) if answer else None
 
     def process_answer(self) -> Optional[Question]:
         platform = self.get_answer()
@@ -133,7 +142,7 @@ class PlatformQuestion(ClosedQuestion):
         if not platform:
             print('I\'m sorry, but that platform does not exist at this train station')
 
-        print('You can find platform %s ')
+        print('You can find platform %s over there' % platform)
         return AnythingElseICanDoQuestion()
 
 
