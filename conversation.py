@@ -62,9 +62,9 @@ class ClosedQuestion(SimpleAnswerQuestion):
         return answer if answer in self._answer_options else None
 
 
-class YesNoQuestion(ClosedQuestion):
+class BooleanQuestion(ClosedQuestion):
     def __init__(self, question: string, **args):
-        super(YesNoQuestion, self).__init__(
+        super(BooleanQuestion, self).__init__(
             question=question,
             answer_options=['yes', 'no'],
             **args
@@ -102,7 +102,7 @@ class WhatCanIDoForYouQuestion(Question):
             return WhatCanIDoForYouQuestion()
 
 
-class AnythingElseICanDoQuestion(YesNoQuestion):
+class AnythingElseICanDoQuestion(BooleanQuestion):
     def __init__(self, answer: string = None):
         super(AnythingElseICanDoQuestion, self).__init__(
             question='Anything else I can do for you?',
