@@ -70,11 +70,11 @@ class SimpleAnswerQuestion(Question):
 
 class ClosedQuestion(SimpleAnswerQuestion):
     def __init__(self, question: str, answer_options: List[str], answer: str = None):
-        self._answer_options = answer_options
         super(ClosedQuestion, self).__init__(
             question=question,
             answer=answer
         )
+        self._answer_options = answer_options
 
     def _normalize_answer(self, answer: str) -> Optional[str]:
         return super()._normalize_answer(answer.lower()) if type(answer) == str else None
