@@ -36,10 +36,10 @@ class SimpleAnswerQuestion(Question):
     def __init__(self, question: string, answer: string = None):
         super(SimpleAnswerQuestion, self).__init__(
             question=question,
-            params={'answer': self.parse_answer(answer)}
+            params={'answer': self.normalize_answer(answer)}
         )
 
-    def parse_answer(self, answer: string) -> string:
+    def normalize_answer(self, answer: string) -> string:
         if type(answer) == str:
             answer = answer.strip()
             return answer if len(answer) > 0 else None
@@ -57,8 +57,8 @@ class ClosedQuestion(SimpleAnswerQuestion):
             answer=answer
         )
 
-    def parse_answer(self, answer: string) -> string:
-        answer = super().parse_answer(answer.lower())
+    def normalize_answer(self, answer: string) -> string:
+        answer = super().normalize_answer(answer.lower())
         return answer if answer in self._answer_options else None
 
 
@@ -123,8 +123,8 @@ class PlatformQuestion(ClosedQuestion):
             **args
         )
 
-    def parse_answer(self, answer: string) -> int:
-        return int(super().parse_answer(answer))
+    def normalize_answer(self, answer: string) -> int:
+        return int(super().normalize_answer(answer))
 
     def process_answer(self) -> Optional[Question]:
         platform = self.get_answer()
