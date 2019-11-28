@@ -1,43 +1,96 @@
+import random
 import AbstractApplication as Base
 from threading import Semaphore
 
 
 class DialogFlowSampleApplication(Base.AbstractApplication):
+    """
+    INTENT DICTIONARY STRUCTURE:
+        self.intents[intent][0]   :     SEMAPHORE
+        self.intents[intent][1]   :     CONVERSATION INTRO
+        self.intents[intent][2]   :     USER RESPONSE
+        self.intents[intent][3]   :     GOOD RESPONSE
+        self.intents[intent[4]    :     BAD RESPONSE
+    """
+
+    '''   STANDARD CONVERSATION FUNCTION PROCESS   '''
+    def converse(self, intent):
+        if intent in self.intents.keys():
+            self.sayAnimated(random.choice(self.intents[intent][1]))
+            self.speechLock.acquire()
+            self.setAudioContext(intent)
+            self.startListening()
+            self.intents[intent][0].acquire(timeout=5)
+            self.stopListening()
+            if not self.intents[intent][2]:
+                self.intents[intent][0].acquire(timeout=2)
+            # Respond and wait for that to finish
+            if self.intents[intent][2]:
+                self.add_good_reply_value(intent)
+                self.sayAnimated(random.choice(self.intents[intent][3]))
+            else:
+                self.sayAnimated(random.choice(self.intents[intent][4]))
+            self.speechLock.acquire()
+        else:
+            raise Exception('Intent passed does not exist')
+
+    def add_good_reply_value(self, intent):
+        reply_value = self.intents[intent][2]
+
+        if intent == 'answer_name':
+            self.intents[intent][3] = [
+                'Nice to meet you '+reply_value+'!',
+                'Oh hi'+reply_value+'!',
+                reply_value+', what a beautiful name. Reminds me of my creators.'
+            ]
+        elif intent == 'answer_destination':
+            self.intents[intent][3] = [
+                'Oooooo, ' + reply_value + ' is lovely.',
+                'I. LOVE. ' + reply_value + '!'
+            ]
+
     def main(self):
+        self.intents = \
+            {
+                'answer_name':
+                    [Semaphore(0),
+                     ['What is your name?', 'Who are you?'],
+                     None,
+                     [],
+                     ['Sorry, I didn\'t get that']
+                ],
+
+                'answer_destination':
+                    [Semaphore(0),
+                     ['Where are you headed to?', 'Where are you going?'],
+                     None,
+                     [],
+                     ['Sorry, I didn\'t get where you\'re going']
+                ]
+                        }
         # Set the correct language (and wait for it to be changed)
         self.langLock = Semaphore(0)
         self.setLanguage('en-US')
         self.langLock.acquire()
 
         # Pass the required Dialogflow parameters (add your Dialogflow parameters)
-        self.setDialogflowKey('<key.json>')
+        self.setDialogflowKey('newagent-xsfpqi-66f399b80178.json')
         self.setDialogflowAgent('newagent-xsfpqi')
+
         # Make the robot ask the question, and wait until it is done speaking
+
         self.speechLock = Semaphore(0)
-        self.sayAnimated('Hello, what is your name?')
-        self.speechLock.acquire()
 
-        # Listen for an answer for at most 5 seconds
-        self.name = None
-        self.nameLock = Semaphore(0)
-        self.setAudioContext('answer_name')
-        self.startListening()
-        self.nameLock.acquire(timeout=5)
-        self.stopListening()
-        if not self.name:  # wait one more second after stopListening (if needed)
-            self.nameLock.acquire(timeout=1)
+        self.converse('answer_name')
+        self.converse('answer_destination')
 
-        # Respond and wait for that to finish
-        if self.name:
-            self.sayAnimated('Nice to meet you ' + self.name + '!')
-        else:
-            self.sayAnimated('Sorry, I didn\'t catch your name.')
-        self.speechLock.acquire()
-
-        # Display a gesture (replace <gestureID> with your gestureID)
+        # TODO
+        #   Display a gesture (replace <gestureID> with your gestureID)
+        '''
         self.gestureLock = Semaphore(0)
         self.doGesture('<gestureID>/behavior_1')
         self.gestureLock.acquire()
+        '''
 
     def onRobotEvent(self, event):
         if event == 'LanguageChanged':
@@ -48,9 +101,9 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
             self.gestureLock.release()
 
     def onAudioIntent(self, *args, intentName):
-        if intentName == 'answer_name' and len(args) > 0:
-            self.name = args[0]
-            self.nameLock.release()
+        if intentName in self.intents.keys() and len(args) > 0:
+            self.intents[intentName][2] = args[0]
+            self.intents[intentName][0].release()
 
 
 # Run the application
