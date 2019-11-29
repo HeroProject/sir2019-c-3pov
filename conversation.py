@@ -37,6 +37,8 @@ class Question:
         get_intent: bool = self._expects_intent and not self._has_intent()
         get_params: bool = self._expects_params and not self._has_params()
         if get_intent or get_params:
+            # TODO
+            #   Change input/output process to connect to NAO
             print(self._question)
             if get_intent:
                 self._set_intent(input('Intent: '))
@@ -100,6 +102,8 @@ class WhatIsYourNameQuestion(SimpleAnswerQuestion):
         )
 
     def _process_answer(self) -> Optional[Question]:
+        # TODO
+        #   Change this with reply
         print('Nice to meet you %s.' % self._get_answer())
         return WhatCanIDoForYouQuestion()
 
@@ -148,9 +152,12 @@ class PlatformQuestion(ClosedQuestion):
 
     def _process_answer(self) -> Optional[Question]:
         if not self._validate_answer():
+            # TODO
+            #   Change accordingly to support robot
             print('I\'m sorry, but that platform does not exist at this train station')
             return PlatformQuestion()
-
+        # TODO
+        #   Change to interface w/ robot
         print('You can find platform %s over there' % self._get_answer())
         return AnythingElseICanDoQuestion()
 
@@ -163,6 +170,8 @@ class DestinationQuestion(SimpleAnswerQuestion):
         )
 
     def _process_answer(self) -> Optional[Question]:
+        # TODO
+        #   Change to interface w/ robot
         print('Find Destination')
         return AnythingElseICanDoQuestion()
 

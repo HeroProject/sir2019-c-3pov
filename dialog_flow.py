@@ -3,20 +3,22 @@ import AbstractApplication as Base
 from threading import Semaphore
 
 
-class DialogFlowSampleApplication(Base.AbstractApplication):
-    """
-    INTENT DICTIONARY STRUCTURE:
-        self.intents[intent][0]   :     SEMAPHORE
-        self.intents[intent][1]   :     CONVERSATION INTRO
-        self.intents[intent][2]   :     USER RESPONSE
-        self.intents[intent][3]   :     GOOD RESPONSE
-        self.intents[intent][4]   :     BAD RESPONSE
-    """
+class DialogFlowApplication(Base.AbstractApplication):
+    def get_input(self, intent: str):
+        self.speechLock.acquire()
+        self.setAudioContext(intent)
+        self.startListening()
+        self.intents[intent][0].acquire(timeout=5)
+        self.stopListening()
+        if not self.intents[intent][2]:
+            self.intents[intent][0].acquire(timeout=2)
 
-    '''   STANDARD CONVERSATION FUNCTION PROCESS   '''
+    #   CONVERSE:
     def converse(self, intent):
         if intent in self.intents.keys():
             self.sayAnimated(random.choice(self.intents[intent][1]))
+            self.get_input(intent)
+            '''
             self.speechLock.acquire()
             self.setAudioContext(intent)
             self.startListening()
@@ -24,16 +26,19 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
             self.stopListening()
             if not self.intents[intent][2]:
                 self.intents[intent][0].acquire(timeout=2)
-            # Respond and wait for that to finish
+            '''
             if self.intents[intent][2]:
                 self.add_good_reply_value(intent)
                 self.sayAnimated(random.choice(self.intents[intent][3]))
             else:
                 self.sayAnimated(random.choice(self.intents[intent][4]))
+            # TODO
+            #   Check if below line needs to be left here or removed
             self.speechLock.acquire()
         else:
             raise Exception('Intent passed does not exist')
 
+    # This method will be replaced in conversation class
     def add_good_reply_value(self, intent):
         reply_value = self.intents[intent][2]
 
@@ -98,14 +103,6 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
 
         self.speechLock = Semaphore(0)
 
-        intro_lines = [
-            'My name is C-3POV, the NS employee of the month for 2019.',
-            'Hi there! My name is C-3POV, or as my homies at NS call me, that fucking robot.'
-            'Hi there! I\'m C-3POV.'
-        ]
-
-        # self.sayAnimated(random.choice(intro_lines))
-
         self.converse('answer_name')
         self.converse('answer_destination')
 
@@ -132,6 +129,6 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
 
 
 # Run the application
-sample = DialogFlowSampleApplication()
+sample = DialogFlowApplication()
 sample.main()
 sample.stop()
