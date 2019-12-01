@@ -1,7 +1,11 @@
 from typing import Dict, Optional, List
+from AbstractApplication import AbstractApplication
+from threading import Semaphore
 
 
-class Question:
+# NEIL CHANGES:
+#   - 'Question' class is now a subclass of 'AbstractApplication'
+class Question(AbstractApplication):
     def __init__(
             self,
             question: str,
@@ -9,7 +13,24 @@ class Question:
             expects_params: bool = True,
             intent: str = None,
             params: Dict[str, any] = None
-    ):
+                 ):
+        super().__init__()
+
+        """   VARIABLES REQUIRED FOR ROBOT INTERFACE   """
+        # Set the correct language (and wait for it to be changed)
+        self.langLock = Semaphore(0)
+        self.setLanguage('en-US')
+        self.langLock.acquire()
+
+        # Pass the required Dialogflow parameters (add your Dialogflow parameters)
+        self.setDialogflowKey('newagent-xsfpqi-66f399b80178.json')
+        self.setDialogflowAgent('newagent-xsfpqi')
+
+        # Initialise the speech semaphore, required for input
+        self.speechLock = Semaphore(0)
+        self.varLock = Semaphore(0)
+        """----------------------------------"""
+
         self._question = question
         self._expects_intent = expects_intent
         self._expects_params = expects_params
@@ -39,6 +60,9 @@ class Question:
         if get_intent or get_params:
             # TODO
             #   Change input/output process to connect to NAO
+            self.sayAnimated(self._question)
+            self.get_input(self._intent)
+            '''
             print(self._question)
             if get_intent:
                 self._set_intent(input('Intent: '))
@@ -47,7 +71,42 @@ class Question:
                 # You can replace this with your own logic in that actually accepts multiple params.
                 # By default we'll only have answer.
                 self._set_params({'answer': input('Answer: ')})
+            '''
         return self._process_answer()
+
+    """   METHODS EXTENDING FROM 'AbstractApplication'   """
+    def onRobotEvent(self, event):
+        if event == 'LanguageChanged':
+            self.langLock.release()
+        elif event == 'TextDone':
+            self.speechLock.release()
+
+        # TODO
+        #   Gesture Implementation
+        '''
+        elif event == 'GestureDone':
+            self.gestureLock.release()
+        '''
+
+    def onAudioIntent(self, *args, intent_name):
+        if intent_name == self._intent and len(args) > 0:
+            if self._expects_intent and not self._has_intent():
+                self._set_intent(args[0])
+            if self._expects_params and not self._has_params():
+                self._set_params(args[0])
+            self.varLock.release()
+
+    """   REQUIRED TO HANDLE SEMAPHORES GRACEFULLY   """
+    def get_input(self, intent: str):
+        self.speechLock.acquire()
+        self.setAudioContext(intent)
+        self.startListening()
+        self.varLock.acquire(timeout=5)
+        self.stopListening()
+        if self._expects_intent and not self._has_intent():
+            self.varLock.acquire(timeout=2)
+        if self._expects_params and not self._has_params():
+            self.varLock.acquire(timeout=2)
 
 
 class SimpleAnswerQuestion(Question):
@@ -102,9 +161,9 @@ class WhatIsYourNameQuestion(SimpleAnswerQuestion):
         )
 
     def _process_answer(self) -> Optional[Question]:
-        # TODO
-        #   Change this with reply
-        print('Nice to meet you %s.' % self._get_answer())
+        #   Changed this with reply
+        self.sayAnimated('Nice to meet you %s.' % self._get_answer())
+        # print('Nice to meet you %s.' % self._get_answer())
         return WhatCanIDoForYouQuestion()
 
 
@@ -123,7 +182,8 @@ class WhatCanIDoForYouQuestion(Question):
         elif self._intent == 'find_destination':
             return DestinationQuestion(answer=self._params['answer'])
         else:
-            print('I didn\'t quite catch that.')
+            self.sayAnimated('I didn\'t quite catch that.')
+            # print('I didn\'t quite catch that.')
             return WhatCanIDoForYouQuestion()
 
 
@@ -137,8 +197,8 @@ class AnythingElseICanDoQuestion(BooleanQuestion):
     def _process_answer(self) -> Optional[Question]:
         if self._get_answer() == 'yes':
             return WhatCanIDoForYouQuestion()
-
-        print('Thank you, and have a nice day.')
+        self.sayAnimated('Thank you, and have a nice day.')
+        # print('Thank you, and have a nice day.')
         return None
 
 
@@ -152,13 +212,13 @@ class PlatformQuestion(ClosedQuestion):
 
     def _process_answer(self) -> Optional[Question]:
         if not self._validate_answer():
-            # TODO
-            #   Change accordingly to support robot
-            print('I\'m sorry, but that platform does not exist at this train station')
+            #   Changed accordingly to support robot
+            self.sayAnimated('I\'m sorry, but that platform does not exist at this train station')
+            # print('I\'m sorry, but that platform does not exist at this train station')
             return PlatformQuestion()
-        # TODO
-        #   Change to interface w/ robot
-        print('You can find platform %s over there' % self._get_answer())
+        #   Changed to interface w/ robot
+        self.sayAnimated('You can find platform %s over there' % self._get_answer())
+        # print('You can find platform %s over there' % self._get_answer())
         return AnythingElseICanDoQuestion()
 
 
@@ -172,7 +232,8 @@ class DestinationQuestion(SimpleAnswerQuestion):
     def _process_answer(self) -> Optional[Question]:
         # TODO
         #   Change to interface w/ robot
-        print('Find Destination')
+        #   Not sure if I have to include anything here... Will test next lab session - Neil @ 1/12/2019
+        # print('Find Destination')
         return AnythingElseICanDoQuestion()
 
 
@@ -182,3 +243,6 @@ q = WhatIsYourNameQuestion()
 # Keep asking questions until we run out of questions.
 while q is not None:
     q = q.ask_question()
+
+#   Stopping the thread at the end of execution
+q.stop()
