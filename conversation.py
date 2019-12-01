@@ -5,6 +5,11 @@ from threading import Semaphore
 
 # NEIL CHANGES:
 #   - 'Question' class is now a subclass of 'AbstractApplication'
+#   - 'print' functions replaced by 'sayAnimated'
+#   - Added necessary semaphores and DialogFlow params to interface w/ robot
+#   - Created get_input function to handle semaphores gracefully and prevent running threads at end of program
+#   - Extended onRobotEvent and onAudioIntent from 'AbstractApplication' to add our functionality
+#   - Replaced input() with get_input() function, which requests an intent (Defined in Google DialogFlow web interface)
 class Question(AbstractApplication):
     def __init__(
             self,
@@ -58,8 +63,6 @@ class Question(AbstractApplication):
         get_intent: bool = self._expects_intent and not self._has_intent()
         get_params: bool = self._expects_params and not self._has_params()
         if get_intent or get_params:
-            # TODO
-            #   Change input/output process to connect to NAO
             self.sayAnimated(self._question)
             self.get_input(self._intent)
             '''
