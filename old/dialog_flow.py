@@ -38,7 +38,7 @@ class DialogFlowApplication(Base.AbstractApplication):
         else:
             raise Exception('Intent passed does not exist')
 
-    # This method will be replaced in conversation class
+    # This method will be replaced in questions class
     def add_good_reply_value(self, intent):
         reply_value = self.intents[intent][2]
 
