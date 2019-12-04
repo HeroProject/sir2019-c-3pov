@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package version="0.0.0" uuid="ns_nao">
+ <names>
+  <name lang="en_US">ns_nao</name>
+ </names>
+ <descriptionLanguages>
+  <language>en_US</language>
+  <language>nl_NL</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path="Rarm_left">
+   <nature>interactive</nature>
+   <autonomous/>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Larm_right">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Larm_forwards">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Rarm_forwards">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Explanation">
+   <nature></nature>
+   <autonomous/>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Question">
+   <nature>interactive</nature>
+   <autonomous/>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Wave">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+ </contents>
+</package>

@@ -1,6 +1,6 @@
 from time import sleep
 
-import AbstractApplication as Base
+import nao.AbstractApplication as Base
 
 
 class SampleApplication(Base.AbstractApplication):
