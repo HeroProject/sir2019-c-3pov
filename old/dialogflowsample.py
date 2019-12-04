@@ -14,6 +14,7 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
     """
 
     '''   STANDARD CONVERSATION FUNCTION PROCESS   '''
+
     def converse(self, intent):
         if intent in self.intents.keys():
             self.sayAnimated(random.choice(self.intents[intent][1]))
@@ -39,9 +40,9 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
 
         if intent == 'answer_name':
             self.intents[intent][3] = [
-                'Nice to meet you '+reply_value+'!',
-                'Oh hi'+reply_value+'!',
-                reply_value+', what a beautiful name. Reminds me of my creators.'
+                'Nice to meet you ' + reply_value + '!',
+                'Oh hi' + reply_value + '!',
+                reply_value + 'What a beautiful name. Reminds me of my creators.'
             ]
         elif intent == 'answer_destination':
             self.intents[intent][3] = [
@@ -67,7 +68,7 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
                      None,
                      [],
                      ['Sorry, I didn\'t get that']
-                ],
+                     ],
 
                 'answer_destination':
                     [Semaphore(0),
@@ -75,16 +76,17 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
                      None,
                      [],
                      ['Sorry, I didn\'t get where you\'re going']
-                ],
+                     ],
                 'answer_instruction':
-                [Semaphore(0),
-                 ['Do you need help with going somewhere, help with finding a platform, or '
-                  'should I call an actual NS Human Being?'],
-                 None,
-                 [],
-                 ['Sorry, I didn\t get it. Can you repeat, pretty please?']
-                ]
-                        }
+                    [Semaphore(0),
+                     ['Do you need help with going somewhere, help with finding a platform, or '
+                      'should I call an actual NS Human Being?'],
+                     None,
+                     [],
+                     ['Sorry, I didn\t get it. Can you repeat, pretty please?']
+                     ]
+            }
+
         # Set the correct language (and wait for it to be changed)
         self.langLock = Semaphore(0)
         self.setLanguage('en-US')
@@ -103,10 +105,19 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
 
         # TODO
         #   Display a gesture (replace <gestureID> with your gestureID)
+        # self.gestureLock = Semaphore(0)
+        # self.doGesture('ns_nao/Rarm_forwards')
+        # self.gestureLock.acquire()
+        # self.gestureLock = Semaphore(0)
+        # self.doGesture('ns_nao/Rarm_left')
+        # self.gestureLock.acquire()
+        self.gestures('ns_nao/Rarm_forwards')
+        self.gestures('ns_nao/Rarm_left')
+        self.gestures('ns_nao/Explanation')
+
+    def gestures(self, gesture):
         self.gestureLock = Semaphore(0)
-        self.doGesture('ns_nao/Rarm_left')
-        self.gestureLock = Semaphore(0)
-        self.doGesture('ns_nao/Larm_right')
+        self.doGesture(gesture)
         self.gestureLock.acquire()
 
     def onRobotEvent(self, event):
