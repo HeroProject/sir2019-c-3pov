@@ -1,5 +1,5 @@
 import random
-import AbstractApplication as Base
+import nao.AbstractApplication as Base
 from threading import Semaphore
 
 
@@ -45,7 +45,7 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
             ]
         elif intent == 'answer_destination':
             self.intents[intent][3] = [
-                'Oooooo, ' + reply_value + ' is lovely.',
+                'Oh, ' + reply_value + ' is lovely.',
                 'I. LOVE. ' + reply_value + '!'
             ]
         elif intent == 'answer_instruction':
@@ -91,31 +91,23 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
         self.langLock.acquire()
 
         # Pass the required Dialogflow parameters (add your Dialogflow parameters)
-        self.setDialogflowKey('newagent-xsfpqi-66f399b80178.json')
+        self.setDialogflowKey('../newagent-xsfpqi-fb9d36b92677.json')
         self.setDialogflowAgent('newagent-xsfpqi')
 
         # Make the robot ask the question, and wait until it is done speaking
 
         self.speechLock = Semaphore(0)
 
-        intro_lines = [
-            'My name is C-3POV, the NS employee of the month for 2019.',
-            'Hi there! My name is C-3POV, or as my homies at NS call me, that fucking robot.'
-            'Hi there! I\'m C-3POV.'
-        ]
-
-        # self.sayAnimated(random.choice(intro_lines))
-
         self.converse('answer_name')
         self.converse('answer_destination')
 
         # TODO
         #   Display a gesture (replace <gestureID> with your gestureID)
-        '''
         self.gestureLock = Semaphore(0)
-        self.doGesture('<gestureID>/behavior_1')
+        self.doGesture('ns_nao/Rarm_left')
+        self.gestureLock = Semaphore(0)
+        self.doGesture('ns_nao/Larm_right')
         self.gestureLock.acquire()
-        '''
 
     def onRobotEvent(self, event):
         if event == 'LanguageChanged':
