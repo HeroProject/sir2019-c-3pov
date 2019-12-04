@@ -18,15 +18,6 @@ class DialogFlowApplication(Base.AbstractApplication):
         if intent in self.intents.keys():
             self.sayAnimated(random.choice(self.intents[intent][1]))
             self.get_input(intent)
-            '''
-            self.speechLock.acquire()
-            self.setAudioContext(intent)
-            self.startListening()
-            self.intents[intent][0].acquire(timeout=5)
-            self.stopListening()
-            if not self.intents[intent][2]:
-                self.intents[intent][0].acquire(timeout=2)
-            '''
             if self.intents[intent][2]:
                 self.add_good_reply_value(intent)
                 self.sayAnimated(random.choice(self.intents[intent][3]))
@@ -104,6 +95,7 @@ class DialogFlowApplication(Base.AbstractApplication):
         self.speechLock = Semaphore(0)
 
         self.converse('answer_name')
+        self.converse('answer_instruction')
         self.converse('answer_destination')
 
         # TODO

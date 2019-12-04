@@ -12,7 +12,7 @@ class WhatIsYourNameQuestion(SimpleAnswerQuestion):
         super(WhatIsYourNameQuestion, self).__init__(
             io=io,
             question='What is your name?',
-            answer=answer
+            answer=answer,
         )
 
     def _process_answer(self) -> Optional[Question]:

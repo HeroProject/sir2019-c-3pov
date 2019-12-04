@@ -1,4 +1,5 @@
 from typing import Dict, Optional
+from threading import Semaphore
 
 from io_mapper.ConversationIO import ConversationIO
 
@@ -19,6 +20,7 @@ class Question:
         self._expects_params = expects_params
         self._intent: str = self._set_intent(intent)
         self._params: Dict[str, any] = self._set_params(params)
+        self.semaphore = Semaphore(0)
 
     def _has_intent(self) -> bool:
         return self._intent is not None
