@@ -103,14 +103,7 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
         self.converse('answer_name')
         self.converse('answer_destination')
 
-        # TODO
-        #   Display a gesture (replace <gestureID> with your gestureID)
-        # self.gestureLock = Semaphore(0)
-        # self.doGesture('ns_nao/Rarm_forwards')
-        # self.gestureLock.acquire()
-        # self.gestureLock = Semaphore(0)
-        # self.doGesture('ns_nao/Rarm_left')
-        # self.gestureLock.acquire()
+        # Choose gesture from ns_nao folder
         self.gestures('ns_nao/Rarm_forwards')
         self.gestures('ns_nao/Rarm_left')
         self.gestures('ns_nao/Explanation')

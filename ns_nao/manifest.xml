@@ -37,6 +37,21 @@
   </behaviorContent>
   <behaviorContent path="Wave">
    <nature>interactive</nature>
+   <autonomous/>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Eyes_color">
+   <nature>interactive</nature>
+   <autonomous/>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Dont_understand">
+   <nature>interactive</nature>
+   <autonomous/>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Affirmation">
+   <nature>interactive</nature>
    <permissions/>
   </behaviorContent>
  </contents>

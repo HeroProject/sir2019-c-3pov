@@ -9,6 +9,9 @@
         <BehaviorDescription name="behavior" src="Explanation" xar="behavior.xar" />
         <BehaviorDescription name="behavior" src="Question" xar="behavior.xar" />
         <BehaviorDescription name="behavior" src="Wave" xar="behavior.xar" />
+        <BehaviorDescription name="behavior" src="Eyes_color" xar="behavior.xar" />
+        <BehaviorDescription name="behavior" src="Dont_understand" xar="behavior.xar" />
+        <BehaviorDescription name="behavior" src="Affirmation" xar="behavior.xar" />
     </BehaviorDescriptions>
     <Dialogs />
     <Resources />
