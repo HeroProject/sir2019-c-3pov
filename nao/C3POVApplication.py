@@ -1,51 +1,44 @@
 from threading import Semaphore
+from typing import Optional
 
 from AbstractApplication import AbstractApplication
 
 
 class C3POVApplication(AbstractApplication):
-    def __init__(self, lang: str, dfKey: str, dfAgent: str):
+    def __init__(self, lang: str, df_key: str, df_agent: str):
         super().__init__()
         # Initialise the speech semaphore, required for input
         self.speechLock = Semaphore(0)
+        self.response: Optional[str] = None
 
         # Set the correct language (and wait for it to be changed)
         self.setLanguage(lang)
-        self.response = None
         self.speechLock.acquire()
 
         # Pass the required Dialogflow parameters (add your Dialogflow parameters)
-        self.setDialogflowKey(dfKey)
-        self.setDialogflowAgent(dfAgent)
+        self.setDialogflowKey(df_key)
+        self.setDialogflowAgent(df_agent)
 
-    def ask(self, sentence: str):
-        self.setAudioContext('answer_name')
-        print(' listen')
+    def ask(self, intent: str) -> Optional[str]:
+        self.setAudioContext(intent)
         self.startListening()
         self.speechLock.acquire(timeout=15)
         self.stopListening()
-        return ''
+        print('Response: ', self.response)
+        return self.response
 
     def say(self, sentence: str):
-        print(' start talking ')
         self.sayAnimated(sentence)
-        print(' end talking ')
         self.speechLock.acquire()
 
     def onRobotEvent(self, event):
         if event == 'LanguageChanged':
             self.speechLock.release()
         if event == 'TextDone':
-            print(' release')
+            print('Release lock')
             self.speechLock.release()
 
-        # TODO
-        #   Gesture Implementation
-        '''
-        elif event == 'GestureDone':
-            self.gestureLock.release()
-        '''
-
-    def onAudioIntent(self, *args, intentName):
-        print('onAudioIntent'+intentName, args)
+    def onAudioIntent(self, *data, intentName):
+        print('Captured sound ', intentName, data)
         self.speechLock.release()
+        self.response = data[0] if data else None

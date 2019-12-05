@@ -5,9 +5,10 @@ from io_mapper.ConversationIO import ConversationIO
 
 
 class ClosedQuestion(SimpleAnswerQuestion):
-    def __init__(self, io: ConversationIO, question: str, answer_options: List[str], answer: str = None):
+    def __init__(self, io: ConversationIO, intent: str, question: str, answer_options: List[str], answer: str = None):
         super(ClosedQuestion, self).__init__(
             io=io,
+            intent=intent,
             question=question,
             answer=answer
         )
@@ -18,4 +19,3 @@ class ClosedQuestion(SimpleAnswerQuestion):
 
     def _validate_answer(self) -> bool:
         return self._get_answer() in self._answer_options
-

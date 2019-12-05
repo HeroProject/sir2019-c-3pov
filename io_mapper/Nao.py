@@ -6,8 +6,8 @@ class Nao(ConversationIO):
     def __init__(self, nao: C3POVApplication):
         self.__nao = nao
 
-    def ask(self, sentence: str):
-        return self.__nao.ask(sentence)
+    def ask(self, intent: str) -> str:
+        return self.__nao.ask(intent)
 
     def say(self, sentence: str):
         print(sentence)

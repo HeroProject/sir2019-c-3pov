@@ -1,5 +1,5 @@
 class ConversationIO:
-    def ask(self, sentence: str) -> str:
+    def ask(self, intent: str) -> str:
         pass
 
     def say(self, sentence: str):

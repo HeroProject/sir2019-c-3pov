@@ -8,10 +8,10 @@ class Question:
     def __init__(
             self,
             io: ConversationIO,
+            intent: str,
             question: str,
             expects_intent: bool = False,
             expects_params: bool = True,
-            intent: str = None,
             params: Dict[str, any] = None
     ):
         self._io = io
@@ -40,16 +40,12 @@ class Question:
         return None
 
     def ask_question(self) -> Optional['Question']:
-        get_intent: bool = self._expects_intent and not self._has_intent()
         get_params: bool = self._expects_params and not self._has_params()
-        if get_intent or get_params:
-            self._io.say(self._question)
-            if get_intent:
-                self._set_intent(self._io.ask('Intent: '))
 
-            if get_params:
-                # You can replace this with your own logic in that actually accepts multiple params.
-                # By default we'll only have answer.
-                self._set_params({'answer': self._io.ask('Answer: ')})
+        if get_params:
+            self._io.say(self._question)
+            # You can replace this with your own logic in that actually accepts multiple params.
+            # By default we'll only have answer.
+            self._set_params({'answer': self._io.ask(self._intent)})
 
         return self._process_answer()

@@ -5,9 +5,10 @@ from io_mapper.ConversationIO import ConversationIO
 
 
 class SimpleAnswerQuestion(Question):
-    def __init__(self, io: ConversationIO, question: str, answer: str = None):
+    def __init__(self, io: ConversationIO, intent: str, question: str, answer: str = None):
         super(SimpleAnswerQuestion, self).__init__(
             io=io,
+            intent=intent,
             question=question,
             params={'answer': self._normalize_answer(answer)}
         )
