@@ -43,7 +43,8 @@ class WhatCanIDoForYouQuestion(ClosedQuestion):
         elif self._get_answer() == 'disruption':
             return DestinationQuestion(io=self._io)
         elif self._get_answer() == 'employee':
-            self._io.say('You can find an employee at the ticket office.')
+            self._io.move('rarm_forwards')
+            self._io.say('You can find an employee at the ticket office. You can find it straight ahead, at the beginning of the train station.')
             return AnythingElseICanDoQuestion(io=self._io)
 
         return WhatCanIDoForYouQuestion(io=self._io)
@@ -72,10 +73,10 @@ class PlatformQuestion(ClosedQuestion):
             self._io.say('Platform %s is straight ahead, the second of this hallway.' % self._get_answer())
         if self._get_answer() in ['5', '6', '7', '8']:
             self._io.move('larm_right')
-            self._io.say('Platform %s is on our right, over there.' % self._get_answer())
+            self._io.say('Platform %s is on your right, over there.' % self._get_answer())
         if self._get_answer() in ['9', '10', '11', '12']:
             self._io.move('rarm_left')
-            self._io.say('Platform %s is on our left, over there.' % self._get_answer())
+            self._io.say('Platform %s is on your left, over there.' % self._get_answer())
         if self._get_answer() in ['13', '14']:
             self._io.move('affirmation')
             self._io.say('Platform %s is behind us, the second last of the hallway.' % self._get_answer())
@@ -84,6 +85,26 @@ class PlatformQuestion(ClosedQuestion):
             self._io.say('Platform %s is behind us, at the end of the hallway.' % self._get_answer())
 
         return AnythingElseICanDoQuestion(self._io)
+
+
+class DestinationQuestion(SimpleAnswerQuestion):
+    def __init__(self, io: ConversationIO, **args):
+        super(DestinationQuestion, self).__init__(
+            io=io,
+            intent='answer_destination',
+            question='Please specify the destination',
+            **args
+        )
+
+    def _process_answer(self) -> Optional[Question]:
+        print (self._get_answer())
+        if self._get_answer() == 'rotterdam':
+            self._io.say('The trains to %s depart from platform 10 in 4 and 19 minutes.' % self._get_answer())
+            return PlatformQuestion(io=self._io, answer='10')
+
+        self._io.say('I didn\'t quite catch that')
+        self._io.move('dont_understand')
+        return DestinationQuestion(io=self._io)
 
 
 class AnythingElseICanDoQuestion(BooleanQuestion):
@@ -104,18 +125,4 @@ class AnythingElseICanDoQuestion(BooleanQuestion):
 
         self._io.move('dont_understand')
         self._io.say('I didn\'t catch that')
-        return AnythingElseICanDoQuestion(io=self._io)
-
-
-class DestinationQuestion(SimpleAnswerQuestion):
-    def __init__(self, io: ConversationIO, **args):
-        super(DestinationQuestion, self).__init__(
-            io=io,
-            intent='answer_destination',
-            question='Please specify the destination',
-            **args
-        )
-
-    def _process_answer(self) -> Optional[Question]:
-        print('Find Destination')
         return AnythingElseICanDoQuestion(io=self._io)

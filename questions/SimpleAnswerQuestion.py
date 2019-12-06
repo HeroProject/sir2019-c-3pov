@@ -11,6 +11,7 @@ class SimpleAnswerQuestion(Question):
         )
 
     def _normalize_answer(self, answer: str) -> Optional[str]:
+        print(answer)
         if type(answer) == str:
             answer = answer.strip()
             return answer if len(answer) > 0 else None

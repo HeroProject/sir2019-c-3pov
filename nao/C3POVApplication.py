@@ -21,6 +21,7 @@ class C3POVApplication(AbstractApplication):
         self.setDialogflowAgent(df_agent)
 
     def ask(self, intent: str) -> Optional[str]:
+        self.setEyeColour("blue")
         self.setAudioContext(intent)
         self.startListening()
         self.speechLock.acquire(timeout=15)
@@ -28,6 +29,7 @@ class C3POVApplication(AbstractApplication):
         return self.response
 
     def say(self, sentence: str):
+        self.setEyeColour("green")
         self.sayAnimated(sentence)
         self.speechLock.acquire()
 
@@ -41,6 +43,7 @@ class C3POVApplication(AbstractApplication):
         if event == 'TextDone':
             print('Speech lock release')
             self.speechLock.release()
+            self.setEyeColour("white")
         if event == 'GestureDone':
             print('Gesture lock release')
             # self.gestureLock.release()
@@ -49,3 +52,4 @@ class C3POVApplication(AbstractApplication):
         print('Captured sound ', intentName, data)
         self.speechLock.release()
         self.response = data[0] if data else None
+        self.setEyeColour("white")
