@@ -1,53 +1,51 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<package version="0.0.0" uuid="gestures">
+<package version="0.0.0" uuid="ns_nao">
  <names>
-  <name lang="en_US">gestures</name>
+  <name lang="en_US">ns_nao</name>
  </names>
  <descriptionLanguages>
   <language>en_US</language>
   <language>nl_NL</language>
  </descriptionLanguages>
  <contents>
-  <behaviorContent path="rarm_left">
+  <behaviorContent path="Rarm_left">
    <nature>solitary</nature>
    <autonomous/>
    <permissions/>
   </behaviorContent>
-  <behaviorContent path="larm_forwards">
+  <behaviorContent path="Larm_right">
    <nature>interactive</nature>
    <permissions/>
   </behaviorContent>
-  <behaviorContent path="rarm_forwards">
+  <behaviorContent path="Larm_forwards">
    <nature>interactive</nature>
    <permissions/>
   </behaviorContent>
-  <behaviorContent path="explanation">
+  <behaviorContent path="Rarm_forwards">
+   <nature>interactive</nature>
+   <permissions/>
+  </behaviorContent>
+  <behaviorContent path="Explanation">
    <nature></nature>
-   <autonomous/>
    <permissions/>
   </behaviorContent>
-  <behaviorContent path="question">
-   <nature>interactive</nature>
-   <autonomous/>
-   <permissions/>
-  </behaviorContent>
-  <behaviorContent path="wave">
+  <behaviorContent path="Question">
    <nature>interactive</nature>
    <permissions/>
   </behaviorContent>
-  <behaviorContent path="eyes_color">
+  <behaviorContent path="Wave">
    <nature>interactive</nature>
    <permissions/>
   </behaviorContent>
-  <behaviorContent path="dont_understand">
+  <behaviorContent path="Eyes_color">
    <nature>interactive</nature>
    <permissions/>
   </behaviorContent>
-  <behaviorContent path="affirmation">
+  <behaviorContent path="Dont_understand">
    <nature>interactive</nature>
    <permissions/>
   </behaviorContent>
-  <behaviorContent path="question2">
+  <behaviorContent path="Affirmation">
    <nature>interactive</nature>
    <permissions/>
   </behaviorContent>
