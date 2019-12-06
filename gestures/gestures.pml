@@ -11,7 +11,6 @@
         <BehaviorDescription name="behavior" src="eyes_color" xar="behavior.xar" />
         <BehaviorDescription name="behavior" src="dont_understand" xar="behavior.xar" />
         <BehaviorDescription name="behavior" src="affirmation" xar="behavior.xar" />
-        <BehaviorDescription name="behavior" src="question2" xar="behavior.xar" />
     </BehaviorDescriptions>
     <Dialogs />
     <Resources />

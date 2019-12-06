@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<package version="0.0.0" uuid="gestures">
+<package uuid="gestures" version="0.0.0">
  <names>
   <name lang="en_US">gestures</name>
  </names>
@@ -10,7 +10,6 @@
  <contents>
   <behaviorContent path="rarm_left">
    <nature>solitary</nature>
-   <autonomous/>
    <permissions/>
   </behaviorContent>
   <behaviorContent path="larm_forwards">
@@ -23,12 +22,10 @@
   </behaviorContent>
   <behaviorContent path="explanation">
    <nature></nature>
-   <autonomous/>
    <permissions/>
   </behaviorContent>
   <behaviorContent path="question">
    <nature>interactive</nature>
-   <autonomous/>
    <permissions/>
   </behaviorContent>
   <behaviorContent path="wave">
@@ -44,10 +41,6 @@
    <permissions/>
   </behaviorContent>
   <behaviorContent path="affirmation">
-   <nature>interactive</nature>
-   <permissions/>
-  </behaviorContent>
-  <behaviorContent path="question2">
    <nature>interactive</nature>
    <permissions/>
   </behaviorContent>

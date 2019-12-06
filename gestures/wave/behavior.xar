@@ -112,7 +112,7 @@ class MyClass(GeneratedClass):
               <Parameter name="X (m)" inherits_from_parent="0" content_type="2" value="2" default_value="1" min="0.001" max="10" tooltip="X coordinate of the target to point at." id="5" />
               <Parameter name="Y (m)" inherits_from_parent="0" content_type="2" value="-1" default_value="0" min="-10" max="10" tooltip="Y coordinate of the target to point at." id="6" />
               <Parameter name="Z (m)" inherits_from_parent="0" content_type="2" value="2" default_value="0" min="-10" max="10" tooltip="Z coordinate of the target to point at." id="7" />
-              <Parameter name="Speed (%)" inherits_from_parent="0" content_type="1" value="50" default_value="50" min="1" max="100" tooltip="Speed to look at the desired position" id="8" />
+              <Parameter name="Speed (%)" inherits_from_parent="0" content_type="1" value="70" default_value="50" min="1" max="100" tooltip="Speed to look at the desired position" id="8" />
               <Parameter name="Effector" inherits_from_parent="0" content_type="3" value="LArm" default_value="Arms" custom_choice="0" tooltip="Effector to use" id="9">
                 <Choice value="Arms" />
                 <Choice value="LArm" />
@@ -219,9 +219,9 @@ class MyClass(GeneratedClass):
               <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
               <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" />
               <Parameter name="X (m)" inherits_from_parent="0" content_type="2" value="2" default_value="1" min="0.001" max="10" tooltip="X coordinate of the target to point at." id="5" />
-              <Parameter name="Y (m)" inherits_from_parent="0" content_type="2" value="5" default_value="0" min="-10" max="10" tooltip="Y coordinate of the target to point at." id="6" />
+              <Parameter name="Y (m)" inherits_from_parent="0" content_type="2" value="3" default_value="0" min="-10" max="10" tooltip="Y coordinate of the target to point at." id="6" />
               <Parameter name="Z (m)" inherits_from_parent="0" content_type="2" value="2" default_value="0" min="-10" max="10" tooltip="Z coordinate of the target to point at." id="7" />
-              <Parameter name="Speed (%)" inherits_from_parent="0" content_type="1" value="50" default_value="50" min="1" max="100" tooltip="Speed to look at the desired position" id="8" />
+              <Parameter name="Speed (%)" inherits_from_parent="0" content_type="1" value="70" default_value="50" min="1" max="100" tooltip="Speed to look at the desired position" id="8" />
               <Parameter name="Effector" inherits_from_parent="0" content_type="3" value="LArm" default_value="Arms" custom_choice="0" tooltip="Effector to use" id="9">
                 <Choice value="Arms" />
                 <Choice value="LArm" />
@@ -330,7 +330,7 @@ class MyClass(GeneratedClass):
               <Parameter name="X (m)" inherits_from_parent="0" content_type="2" value="2" default_value="1" min="0.001" max="10" tooltip="X coordinate of the target to point at." id="5" />
               <Parameter name="Y (m)" inherits_from_parent="0" content_type="2" value="-1" default_value="0" min="-10" max="10" tooltip="Y coordinate of the target to point at." id="6" />
               <Parameter name="Z (m)" inherits_from_parent="0" content_type="2" value="2" default_value="0" min="-10" max="10" tooltip="Z coordinate of the target to point at." id="7" />
-              <Parameter name="Speed (%)" inherits_from_parent="0" content_type="1" value="50" default_value="50" min="1" max="100" tooltip="Speed to look at the desired position" id="8" />
+              <Parameter name="Speed (%)" inherits_from_parent="0" content_type="1" value="70" default_value="50" min="1" max="100" tooltip="Speed to look at the desired position" id="8" />
               <Parameter name="Effector" inherits_from_parent="0" content_type="3" value="LArm" default_value="Arms" custom_choice="0" tooltip="Effector to use" id="9">
                 <Choice value="Arms" />
                 <Choice value="LArm" />
@@ -437,9 +437,9 @@ class MyClass(GeneratedClass):
               <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
               <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" />
               <Parameter name="X (m)" inherits_from_parent="0" content_type="2" value="2" default_value="1" min="0.001" max="10" tooltip="X coordinate of the target to point at." id="5" />
-              <Parameter name="Y (m)" inherits_from_parent="0" content_type="2" value="5" default_value="0" min="-10" max="10" tooltip="Y coordinate of the target to point at." id="6" />
+              <Parameter name="Y (m)" inherits_from_parent="0" content_type="2" value="3" default_value="0" min="-10" max="10" tooltip="Y coordinate of the target to point at." id="6" />
               <Parameter name="Z (m)" inherits_from_parent="0" content_type="2" value="2" default_value="0" min="-10" max="10" tooltip="Z coordinate of the target to point at." id="7" />
-              <Parameter name="Speed (%)" inherits_from_parent="0" content_type="1" value="50" default_value="50" min="1" max="100" tooltip="Speed to look at the desired position" id="8" />
+              <Parameter name="Speed (%)" inherits_from_parent="0" content_type="1" value="70" default_value="50" min="1" max="100" tooltip="Speed to look at the desired position" id="8" />
               <Parameter name="Effector" inherits_from_parent="0" content_type="3" value="LArm" default_value="Arms" custom_choice="0" tooltip="Effector to use" id="9">
                 <Choice value="Arms" />
                 <Choice value="LArm" />
