@@ -4,3 +4,6 @@ class ConversationIO:
 
     def say(self, sentence: str):
         pass
+
+    def move(self, gesture: str):
+        pass

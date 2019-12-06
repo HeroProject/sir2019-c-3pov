@@ -1,7 +1,7 @@
 from threading import Semaphore
 from typing import Optional
 
-from AbstractApplication import AbstractApplication
+from nao.AbstractApplication import AbstractApplication
 
 
 class C3POVApplication(AbstractApplication):
@@ -9,6 +9,7 @@ class C3POVApplication(AbstractApplication):
         super().__init__()
         # Initialise the speech semaphore, required for input
         self.speechLock = Semaphore(0)
+        self.gestureLock = Semaphore(0)
         self.response: Optional[str] = None
 
         # Set the correct language (and wait for it to be changed)
@@ -24,19 +25,26 @@ class C3POVApplication(AbstractApplication):
         self.startListening()
         self.speechLock.acquire(timeout=15)
         self.stopListening()
-        print('Response: ', self.response)
         return self.response
 
     def say(self, sentence: str):
         self.sayAnimated(sentence)
         self.speechLock.acquire()
 
+    def move(self, gesture):
+        self.doGesture('gestures/' + gesture)
+        # self.gestureLock.acquire()
+
     def onRobotEvent(self, event):
+        print('Robot event', event)
         if event == 'LanguageChanged':
             self.speechLock.release()
         if event == 'TextDone':
-            print('Release lock')
+            print('Speech lock release')
             self.speechLock.release()
+        if event == 'GestureDone':
+            print('Gesture lock release')
+            # self.gestureLock.release()
 
     def onAudioIntent(self, *data, intentName):
         print('Captured sound ', intentName, data)

@@ -60,53 +60,53 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
                 ]
 
     def main(self):
-        self.intents = \
-            {
-                'answer_name':
-                    [Semaphore(0),
-                     ['What is your name?', 'Who are you?'],
-                     None,
-                     [],
-                     ['Sorry, I didn\'t get that']
-                     ],
-
-                'answer_destination':
-                    [Semaphore(0),
-                     ['Where are you headed to?', 'Where are you going?'],
-                     None,
-                     [],
-                     ['Sorry, I didn\'t get where you\'re going']
-                     ],
-                'answer_instruction':
-                    [Semaphore(0),
-                     ['Do you need help with going somewhere, help with finding a platform, or '
-                      'should I call an actual NS Human Being?'],
-                     None,
-                     [],
-                     ['Sorry, I didn\t get it. Can you repeat, pretty please?']
-                     ]
-            }
-
-        # Set the correct language (and wait for it to be changed)
-        self.langLock = Semaphore(0)
-        self.setLanguage('en-US')
-        self.langLock.acquire()
-
-        # Pass the required Dialogflow parameters (add your Dialogflow parameters)
-        self.setDialogflowKey('../newagent-xsfpqi-fb9d36b92677.json')
+        # self.intents = \
+        #     {
+        #         'answer_name':
+        #             [Semaphore(0),
+        #              ['What is your name?', 'Who are you?'],
+        #              None,
+        #              [],
+        #              ['Sorry, I didn\'t get that']
+        #              ],
+        #
+        #         'answer_destination':
+        #             [Semaphore(0),
+        #              ['Where are you headed to?', 'Where are you going?'],
+        #              None,
+        #              [],
+        #              ['Sorry, I didn\'t get where you\'re going']
+        #              ],
+        #         'answer_instruction':
+        #             [Semaphore(0),
+        #              ['Do you need help with going somewhere, help with finding a platform, or '
+        #               'should I call an actual NS Human Being?'],
+        #              None,
+        #              [],
+        #              ['Sorry, I didn\t get it. Can you repeat, pretty please?']
+        #              ]
+        #     }
+        #
+        # # Set the correct language (and wait for it to be changed)
+        # self.langLock = Semaphore(0)
+        # self.setLanguage('en-US')
+        # self.langLock.acquire()
+        #
+        # # Pass the required Dialogflow parameters (add your Dialogflow parameters)
+        self.setDialogflowKey('../newagent-xsfpqi-7709b1d68262.json')
         self.setDialogflowAgent('newagent-xsfpqi')
-
-        # Make the robot ask the question, and wait until it is done speaking
-
-        self.speechLock = Semaphore(0)
-
-        self.converse('answer_name')
-        self.converse('answer_destination')
+        #
+        # # Make the robot ask the question, and wait until it is done speaking
+        #
+        # self.speechLock = Semaphore(0)
+        #
+        # self.converse('answer_name')
+        # self.converse('answer_destination')
 
         # Choose gesture from ns_nao folder
-        self.gestures('ns_nao/Rarm_forwards')
-        self.gestures('ns_nao/Rarm_left')
-        self.gestures('ns_nao/Explanation')
+        self.gestures('gestures/rarm_forwards')
+        self.gestures('gestures/rarm_left')
+        self.gestures('gestures/explanation')
 
     def gestures(self, gesture):
         self.gestureLock = Semaphore(0)
