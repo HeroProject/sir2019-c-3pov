@@ -10,30 +10,32 @@
  <contents>
   <behaviorContent path="rarm_left">
    <nature>solitary</nature>
+   <autonomous/>
    <permissions/>
   </behaviorContent>
   <behaviorContent path="larm_forwards">
    <nature>interactive</nature>
+   <autonomous/>
    <permissions/>
   </behaviorContent>
   <behaviorContent path="rarm_forwards">
    <nature>interactive</nature>
+   <autonomous/>
    <permissions/>
   </behaviorContent>
   <behaviorContent path="explanation">
    <nature></nature>
+   <autonomous/>
    <permissions/>
   </behaviorContent>
   <behaviorContent path="question">
    <nature>interactive</nature>
+   <autonomous/>
    <permissions/>
   </behaviorContent>
   <behaviorContent path="wave">
    <nature>interactive</nature>
-   <permissions/>
-  </behaviorContent>
-  <behaviorContent path="eyes_color">
-   <nature>interactive</nature>
+   <autonomous/>
    <permissions/>
   </behaviorContent>
   <behaviorContent path="dont_understand">

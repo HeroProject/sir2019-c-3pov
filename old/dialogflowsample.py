@@ -1,9 +1,9 @@
 import random
-import nao.AbstractApplication as Base
+from nao.AbstractApplication import AbstractApplication
 from threading import Semaphore
 
 
-class DialogFlowSampleApplication(Base.AbstractApplication):
+class DialogFlowSampleApplication(AbstractApplication):
     """
     INTENT DICTIONARY STRUCTURE:
         self.intents[intent][0]   :     SEMAPHORE
@@ -93,7 +93,7 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
         # self.langLock.acquire()
         #
         # # Pass the required Dialogflow parameters (add your Dialogflow parameters)
-        self.setDialogflowKey('../newagent-xsfpqi-7709b1d68262.json')
+        self.setDialogflowKey('../newagent-xsfpqi-fb9d36b92677.json')
         self.setDialogflowAgent('newagent-xsfpqi')
         #
         # # Make the robot ask the question, and wait until it is done speaking
@@ -107,6 +107,7 @@ class DialogFlowSampleApplication(Base.AbstractApplication):
         self.gestures('gestures/rarm_forwards')
         self.gestures('gestures/rarm_left')
         self.gestures('gestures/explanation')
+        self.setEyeColour("magenta")
 
     def gestures(self, gesture):
         self.gestureLock = Semaphore(0)
