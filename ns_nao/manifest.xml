@@ -9,7 +9,7 @@
  </descriptionLanguages>
  <contents>
   <behaviorContent path="Rarm_left">
-   <nature>interactive</nature>
+   <nature>solitary</nature>
    <autonomous/>
    <permissions/>
   </behaviorContent>
@@ -27,27 +27,22 @@
   </behaviorContent>
   <behaviorContent path="Explanation">
    <nature></nature>
-   <autonomous/>
    <permissions/>
   </behaviorContent>
   <behaviorContent path="Question">
    <nature>interactive</nature>
-   <autonomous/>
    <permissions/>
   </behaviorContent>
   <behaviorContent path="Wave">
    <nature>interactive</nature>
-   <autonomous/>
    <permissions/>
   </behaviorContent>
   <behaviorContent path="Eyes_color">
    <nature>interactive</nature>
-   <autonomous/>
    <permissions/>
   </behaviorContent>
   <behaviorContent path="Dont_understand">
    <nature>interactive</nature>
-   <autonomous/>
    <permissions/>
   </behaviorContent>
   <behaviorContent path="Affirmation">
