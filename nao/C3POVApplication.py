@@ -36,7 +36,6 @@ class C3POVApplication(AbstractApplication):
         # self.gestureLock.acquire()
 
     def onRobotEvent(self, event):
-        print('Robot event', event)
         if event == 'LanguageChanged':
             self.speechLock.release()
         if event == 'TextDone':

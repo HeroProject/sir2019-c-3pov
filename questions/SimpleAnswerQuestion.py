@@ -1,17 +1,13 @@
 from typing import Optional
 
-from questions.Question import Question
-from io_mapper.ConversationIO import ConversationIO
+from .Question import Question
 
 
 class SimpleAnswerQuestion(Question):
-    def __init__(self, io: ConversationIO, intent: str, question: str, gesture: str = None, answer: str = None):
+    def __init__(self, answer: str = None, **args):
         super(SimpleAnswerQuestion, self).__init__(
-            io=io,
-            intent=intent,
-            question=question,
-            gesture=gesture,
-            params={'answer': self._normalize_answer(answer)}
+            params={'answer': self._normalize_answer(answer)},
+            **args
         )
 
     def _normalize_answer(self, answer: str) -> Optional[str]:

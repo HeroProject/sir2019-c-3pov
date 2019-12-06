@@ -1,13 +1,11 @@
-from questions.ClosedQuestion import ClosedQuestion
-from io_mapper.ConversationIO import ConversationIO
+from .ClosedQuestion import ClosedQuestion
 
 
 class BooleanQuestion(ClosedQuestion):
-    def __init__(self, io: ConversationIO, question: str, **args):
+    def __init__(self, **args):
         super(BooleanQuestion, self).__init__(
-            io=io,
-            question=question,
             answer_options=['yes', 'no', 'maybe'],
+            intent='answer_boolean',
             **args
         )
 
