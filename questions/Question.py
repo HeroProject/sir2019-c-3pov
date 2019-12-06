@@ -8,15 +8,15 @@ class Question:
     def __init__(
             self,
             io: ConversationIO,
-            intent: str,
             question: str,
-            expects_intent: bool = False,
+            intent: str = None,
+            gesture: str = None,
             expects_params: bool = True,
             params: Dict[str, any] = None
     ):
         self._io = io
         self._question = question
-        self._expects_intent = expects_intent
+        self._gesture = gesture
         self._expects_params = expects_params
         self._intent: str = self._set_intent(intent)
         self._params: Dict[str, any] = self._set_params(params)
@@ -43,6 +43,7 @@ class Question:
         get_params: bool = self._expects_params and not self._has_params()
 
         if get_params:
+            self._io.move(self._gesture)
             self._io.say(self._question)
             # You can replace this with your own logic in that actually accepts multiple params.
             # By default we'll only have answer.

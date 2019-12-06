@@ -7,8 +7,13 @@ class Nao(ConversationIO):
         self.__nao = nao
 
     def ask(self, intent: str) -> str:
+        print("Intent: ", intent)
         return self.__nao.ask(intent)
 
     def say(self, sentence: str):
         print(sentence)
         self.__nao.say(sentence)
+
+    def move(self, gesture: str):
+        print("Gesture: ", gesture)
+        self.__nao.move(gesture)

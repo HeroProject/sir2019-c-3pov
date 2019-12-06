@@ -1,6 +1,3 @@
-from typing import Optional
-
-from questions import Question
 from questions.ClosedQuestion import ClosedQuestion
 from io_mapper.ConversationIO import ConversationIO
 

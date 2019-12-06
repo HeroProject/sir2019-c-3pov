@@ -7,18 +7,16 @@ from questions.Question import Question
 from questions.SimpleAnswerQuestion import SimpleAnswerQuestion
 
 
-class WhatIsYourNameQuestion(SimpleAnswerQuestion):
-    def __init__(self, io: ConversationIO, answer: str = None):
-        super(WhatIsYourNameQuestion, self).__init__(
+class IAmC3POVQuestion(Question):
+    def __init__(self, io: ConversationIO):
+        super(IAmC3POVQuestion, self).__init__(
             io=io,
-            intent='answer_name',
-            question='What is your name?',
-            answer=answer,
+            question='Hi, I am C-3-P-O-V.',
+            expects_params=False
         )
 
     def _process_answer(self) -> Optional[Question]:
-        #   Changed this with reply
-        self._io.say('Nice to meet you %s.' % self._get_answer())
+        self._io.say(self._question)
         return WhatCanIDoForYouQuestion(self._io)
 
 
@@ -28,6 +26,7 @@ class WhatCanIDoForYouQuestion(ClosedQuestion):
             io=io,
             intent='answer_instruction',
             question='Do you need help with a destination, platform, disruption or do you want to talk to an employee?',
+            gesture='wave',
             answer_options=['platform', 'employee', 'destination', 'disruption']
         )
 
